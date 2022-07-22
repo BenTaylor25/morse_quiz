@@ -1,4 +1,6 @@
 from random import choice as pick_rand, randint as gen_ind
+from colorama import init, Fore, Style
+init(convert=True)
 
 def get_key(): # list of (<char>, <morse_string>)
     key = []
@@ -24,9 +26,9 @@ def main():
         inp = input("answer: ")
 
         if inp.lower() == pair[not q_ind]:
-            print("correct")
+            print(Fore.GREEN + "correct" + Style.RESET_ALL)
         else:
-            print(pair[not q_ind])
+            print(Fore.RED + pair[not q_ind] + Style.RESET_ALL)
         print()
 
 if __name__ == '__main__':
