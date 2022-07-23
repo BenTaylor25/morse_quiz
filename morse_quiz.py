@@ -1,8 +1,9 @@
-from random import choice as pick_rand, randint
+from typing import Callable, List, Tuple
+from random import choice, randint
 from colorama import init, Fore, Style
 init(convert=True)
 
-def get_key(): # list of (<char>, <morse_string>)
+def get_key() -> List[Tuple[str, str]]:
     key = []
     with open("key.txt") as f:
         for line in f.readlines():
@@ -15,7 +16,7 @@ def get_key(): # list of (<char>, <morse_string>)
             key.append((char, morse_string))
     return key
 
-def get_conversion_mode():
+def get_conversion_mode() -> Callable[[None], int]:
     print("1. Both")
     print("2. Morse to English")
     print("3. English to Morse")
@@ -33,19 +34,23 @@ def get_conversion_mode():
 def main():
     conversion_mode = get_conversion_mode()
     key = get_key()
-    inp = ""
-    while inp.lower() not in ("exit", "quit", "break", "close"):
-        pair = pick_rand(key)
+    while True:
+        pair = choice(key)
         q_ind = conversion_mode()
 
         print(pair[q_ind])
         inp = input("answer: ")
 
-        if inp.lower() == pair[not q_ind]:
+        answered_correctly = inp.lower() == pair[not q_ind]
+        if answered_correctly:
             print(Fore.GREEN + "correct" + Style.RESET_ALL)
         else:
             print(Fore.RED + pair[not q_ind] + Style.RESET_ALL)
         print()
+
+        # repeat until
+        if inp.lower() in ("exit", "quit", "break", "close"):
+            break
 
 if __name__ == '__main__':
     main()
